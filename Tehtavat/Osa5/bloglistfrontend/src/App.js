@@ -10,8 +10,8 @@ import loginService from './services/login'
 import './app.css';
 
 class App extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       user: null,
       error: null,
@@ -94,7 +94,6 @@ class App extends React.Component {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON !== null) {
       const user = JSON.parse(loggedUserJSON)
-      console.log('componentDidMount user: ', user)
       this.setState({ user })
       blogService.setToken(user.token)
     }
