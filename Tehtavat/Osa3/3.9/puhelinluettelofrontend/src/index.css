@@ -1,0 +1,9 @@
+.notice {
+    color: rgb(0, 0, 0);
+    background: rgb(27, 233, 95);
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 0.5px;
+    margin-bottom: 10px;
+    max-width: 300px;
+}
