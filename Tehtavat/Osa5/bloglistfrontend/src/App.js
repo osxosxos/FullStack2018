@@ -1,10 +1,13 @@
 import React from 'react'
 import Blog from './components/Blog'
+import Notice from './components/Notice'
+import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import LogoutForm from './components/LogoutForm'
 import BlogPostForm from './components/BlogPostForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './app.css';
 
 class App extends React.Component {
   constructor() {
@@ -12,6 +15,7 @@ class App extends React.Component {
     this.state = {
       user: null,
       error: null,
+      notice: null,
       username: '',
       password: '',
       newBlogTitle: '',
@@ -34,6 +38,8 @@ class App extends React.Component {
       url: this.state.newBlogUrl
     }
 
+    this.postBlogForm.toggleVisibility()
+
     blogService
       .create(blogObject)
       .then(blogObject => {
@@ -43,6 +49,13 @@ class App extends React.Component {
           newBlogAuthor: '',
           newBlogUrl: ''
         })
+
+        if (blogObject.title !== '' && blogObject.author !== '' && blogObject.url !== '') {
+          this.setState({ notice: 'Blog successfully added!' })
+          setTimeout(() => {
+            this.setState({ notice: null })
+          }, 5000)
+        }
       })
   }
 
@@ -59,7 +72,7 @@ class App extends React.Component {
       this.setState({ username: '', password: '', user })
     } catch (exception) {
       this.setState({
-        error: 'wrong username or password',
+        error: 'wrong username or password'
       })
       setTimeout(() => {
         this.setState({ error: null })
@@ -88,7 +101,17 @@ class App extends React.Component {
   }
 
   render() {
-   
+
+    const blogPostForm = () => (
+      <Togglable buttonLabel="Create" ref={component => this.blogPostForm = component}>
+        <BlogPostForm
+          state={this.state}
+          addBlog={this.addBlog}
+          handleFieldChange={this.handleFieldChange}
+        />
+      </Togglable>
+    )
+
     if (this.state.user === null) {
       return (
         <div>
@@ -97,7 +120,10 @@ class App extends React.Component {
             login={this.login}
             handleFieldChange={this.handleFieldChange}
           />
-          <h3>{this.state.error}</h3>
+          <Notice
+            message={this.state.error}
+            classname='error'
+          />
         </div>
       )
     }
@@ -113,10 +139,11 @@ class App extends React.Component {
           {this.state.blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
-          <BlogPostForm
-            state={this.state}
-            addBlog={this.addBlog}
-            handleFieldChange={this.handleFieldChange}
+          <h2>{'Be a Hero? Create a new blog!'}</h2>
+          {blogPostForm()}
+          <Notice
+            message={this.state.notice}
+            classname='notice'
           />
         </div>
       )

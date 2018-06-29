@@ -3,7 +3,6 @@ import React from 'react'
 const BlogPostForm = (props) => {
     return (
         <div>
-            <h2>{'Be a Hero? Create a new blog!'}</h2>
             <form onSubmit={props.addBlog}>
                 <div>
                     {'Title: '}
@@ -32,7 +31,7 @@ const BlogPostForm = (props) => {
                         onChange={props.handleFieldChange}
                     />
                 </div>
-                <button type="submit">{'Create'}</button>
+                <button type="submit">{'Send'}</button>
             </form>
         </div>
     )
