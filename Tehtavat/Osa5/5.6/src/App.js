@@ -57,32 +57,6 @@ class App extends React.Component {
       })
   }
 
-  likeBlog = (id) => {
-
-    return () => {
-
-      let updatedBlog = this.state.blogs.find(blog => blog.id === id)      
-      updatedBlog.likes = updatedBlog.likes + 1 
-
-      blogService
-        .like(id, updatedBlog)
-        .then(updatedBlog => {
-          this.setState({
-            blogs: this.state.blogs.map(blog => blog.id !== id ? blog : updatedBlog)
-          })
-        })
-        .catch(error => {
-          this.setState({
-            error: ` blog '${updatedBlog.title}' has already been removed from server`,
-            blogs: this.state.blogs.filter(blog => blog.id !== id)
-          })
-          setTimeout(() => {
-            this.setState({ error: null })
-          }, 50000)
-        })
-    }
-  }
-
   login = async (event) => {
     event.preventDefault()
     try {
@@ -125,11 +99,9 @@ class App extends React.Component {
 
   render() {
 
-    {
-      this.state.blogs.map(blog =>
-        console.log('blog.user.name: ', blog.user.name)
-      )
-    }
+    {this.state.blogs.map(blog =>
+      console.log('blog.user.name: ', blog.user.name)
+    )}
 
     const blogPostForm = () => (
       <Togglable buttonLabel="Create" ref={component => this.blogPostForm = component}>
@@ -169,11 +141,9 @@ class App extends React.Component {
             <Blog key={blog.id}
               title={blog.title}
               author={blog.author}
-              likes={blog.likes}
-              url={blog.url}
-              name={blog.user.name}
-              id ={blog.id}
-              likeBlog={this.likeBlog}
+              likes ={blog.likes}
+              url = {blog.url}
+              name = {blog.user.name}
             />
           )}
           <h2>{'Be a Hero? Create a new blog!'}</h2>

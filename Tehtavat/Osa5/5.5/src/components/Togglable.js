@@ -9,12 +9,19 @@ class Togglable extends React.Component {
     }
 
     toggleVisibility = () => {
+        console.log('nappia toggleVisible painettu!')
         this.setState({ visible: !this.state.visible })
     }
 
     render() {
         const hideWhenVisible = { display: this.state.visible ? 'none' : '' }
         const showWhenVisible = { display: this.state.visible ? '' : 'none' }
+
+        console.log('hideWhenVisible: ', hideWhenVisible)
+        console.log('showWhenVisible:', showWhenVisible)
+
+        console.log('props: ', this.props)
+        console.log('props.children: ', this.props.children)
 
         return (
             <div>

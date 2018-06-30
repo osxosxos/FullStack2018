@@ -25,7 +25,7 @@ class Blog extends React.Component {
           <a onClick={this.toggleVisibility}>{this.props.title}</a> <a>{this.props.author}</a>
           <p>{this.props.url} </p>
           <p>{this.props.likes} {'likes '} {}
-            <button onClick={this.props.likeBlog(this.props.id)}>
+            <button onClick={console.log('like button pressed')}>
               {'like'}
             </button>
           </p>
