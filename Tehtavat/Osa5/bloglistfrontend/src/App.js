@@ -61,16 +61,11 @@ class App extends React.Component {
 
     return () => {
 
-      let updatedBlog = this.state.blogs.find(blog => blog.id === id)      
-      updatedBlog.likes = updatedBlog.likes + 1 
+      const blog = this.state.blogs.find(blog => blog.id === id)
+      const updatedBlog = { ...blog, likes: blog.likes + 1 }
 
       blogService
         .like(id, updatedBlog)
-        .then(updatedBlog => {
-          this.setState({
-            blogs: this.state.blogs.map(blog => blog.id !== id ? blog : updatedBlog)
-          })
-        })
         .catch(error => {
           this.setState({
             error: ` blog '${updatedBlog.title}' has already been removed from server`,
@@ -80,6 +75,9 @@ class App extends React.Component {
             this.setState({ error: null })
           }, 50000)
         })
+      this.setState({
+        blogs: this.state.blogs.map(blog => blog.id !== id ? blog : updatedBlog)
+      })
     }
   }
 
@@ -123,13 +121,20 @@ class App extends React.Component {
     }
   }
 
-  render() {
+  sortBlogsByLikes() {
+    console.log('this.state.blogs:')
+    console.log(this.state.blogs)
+    let sortedByLikes = this.state.blogs
+    sortedByLikes.slice(0);
+    sortedByLikes.sort(function (blogA, blogB) {
+      return blogA.likes - blogB.likes;
+    });
+    console.log('sortedByLikes:');
+    console.log(sortedByLikes);
+    this.setState({blogs: sortedByLikes})
+  }
 
-    {
-      this.state.blogs.map(blog =>
-        console.log('blog.user.name: ', blog.user.name)
-      )
-    }
+  render() {
 
     const blogPostForm = () => (
       <Togglable buttonLabel="Create" ref={component => this.blogPostForm = component}>
@@ -158,6 +163,7 @@ class App extends React.Component {
     }
 
     if (this.state.user !== null) {
+      this.sortBlogsByLikes
       return (
         <div>
           <LogoutForm
@@ -172,7 +178,7 @@ class App extends React.Component {
               likes={blog.likes}
               url={blog.url}
               name={blog.user.name}
-              id ={blog.id}
+              id={blog.id}
               likeBlog={this.likeBlog}
             />
           )}
