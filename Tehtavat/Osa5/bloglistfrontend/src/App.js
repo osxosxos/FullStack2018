@@ -110,7 +110,8 @@ class App extends React.Component {
 
   componentDidMount() {
     blogService.getAll().then(blogs =>
-      this.setState({ blogs })
+      this.setState({ blogs }),
+      this.sortBlogsByLikes()
     )
 
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -120,21 +121,22 @@ class App extends React.Component {
       blogService.setToken(user.token)
     }
 
-    console.log('this.state.blogs')
-    console.log(this.state.blogs)
-
   }
 
   sortBlogsByLikes() {
     console.log('sortByLikes: this.state.blogs:')
     console.log(this.state.blogs)
-    let sortedByLikes = this.state.blogs
-    sortedByLikes.sort(function (blogA, blogB) {
+    let copy = []
+    for (var i = 0; i < this.state.blogs.length; i++) {
+      copy.push(this.state.blogs[i])
+    }
+    copy.sort(function (blogA, blogB) {
       return blogA.likes - blogB.likes;
     });
     console.log('sortedByLikes:');
-    console.log(sortedByLikes);
-    this.setState({blogs: sortedByLikes})
+    console.log(copy);
+
+    this.setState({ blogs: copy })
   }
 
   render() {
@@ -166,7 +168,6 @@ class App extends React.Component {
     }
 
     if (this.state.user !== null) {
-      this.sortBlogsByLikes
       return (
         <div>
           <LogoutForm
