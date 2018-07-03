@@ -119,13 +119,16 @@ class App extends React.Component {
       this.setState({ user })
       blogService.setToken(user.token)
     }
+
+    console.log('this.state.blogs')
+    console.log(this.state.blogs)
+
   }
 
   sortBlogsByLikes() {
-    console.log('this.state.blogs:')
+    console.log('sortByLikes: this.state.blogs:')
     console.log(this.state.blogs)
     let sortedByLikes = this.state.blogs
-    sortedByLikes.slice(0);
     sortedByLikes.sort(function (blogA, blogB) {
       return blogA.likes - blogB.likes;
     });
