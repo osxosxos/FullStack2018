@@ -27,16 +27,4 @@ const like = async (id, updatedBlog) => {
   return response.data
 }
 
-const remove = async (id, blogToBeDeleted) => {
-
-  // Tähän asti toimii, blogToBeDeleted on se mikä pitääkin!
-  // Works so far, blogToBeDeleted is as it should be!
-
-  const config = {
-    headers: { 'Authorization': token }
-  }
-  const response = await axios.delete(`${baseUrl}/${id}`, blogToBeDeleted, config)
-  return response.data
-}
-
-export default { getAll, create, like, setToken, remove }
+export default { getAll, create, like, setToken }

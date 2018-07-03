@@ -81,28 +81,6 @@ class App extends React.Component {
     }
   }
 
-  removeBlog = (id) => {
-
-    return () => {
-
-      const blog = this.state.blogs.find(blog => blog.id === id)
-      const blogToBeDeleted = { ...blog}
-
-      blogService
-        .remove(id, blogToBeDeleted)
-        .catch(error => {
-          error: ` blog '${blogToBeDeleted.title}' has already been removed from server`,
-            this.state.blogs.filter(blog => blog.id !== id)
-        })
-      setTimeout(() => {
-        this.setState({ error: null })
-      }, 50000)
-      this.setState({
-        blogs: this.state.blogs.filter(blog => blog.id !== id)
-      })
-    }
-  }
-
   login = async (event) => {
     event.preventDefault()
     try {
@@ -138,6 +116,9 @@ class App extends React.Component {
       })
     )
 
+    console.log(this.state.blogs)
+    console.log(this.state.blogs)
+      
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON !== null) {
       const user = JSON.parse(loggedUserJSON)
@@ -145,14 +126,22 @@ class App extends React.Component {
       blogService.setToken(user.token)
     }
 
+    console.log(this.state.blogs)
+
   }
 
   sortBlogsByLikes() {
     let copy = []
-
+    
+    console.log('blogs:')
+    console.log(this.state.blogs)
+    
     for (var i = 0; i < this.state.blogs.length; i++) {
       copy.push(this.state.blogs[i])
     }
+
+    console.log('copy after operation')
+    console.log(copy)
 
     copy.sort(function (blogA, blogB) {
       return blogB.likes - blogA.likes;
@@ -205,7 +194,6 @@ class App extends React.Component {
               name={blog.user.name}
               id={blog.id}
               likeBlog={this.likeBlog}
-              removeBlog={this.removeBlog}
             />
           )}
           <h2>{'Be a Hero? Create a new blog!'}</h2>

@@ -30,9 +30,6 @@ class Blog extends React.Component {
             </button>
           </p>
           <p>{'added by: '}{this.props.name}</p>
-          <button onClick={this.props.removeBlog(this.props.id)}>
-            {'delete'}
-          </button>
         </div>
       </div>
     )
