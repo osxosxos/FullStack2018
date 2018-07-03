@@ -27,4 +27,4 @@ const like = async (id, updatedBlog) => {
   return response.data
 }
 
-export default { getAll, create, like, setToken}
+export default { getAll, create, like, setToken }

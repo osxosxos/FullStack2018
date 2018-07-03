@@ -110,12 +110,8 @@ class App extends React.Component {
 
   componentDidMount() {
     blogService.getAll().then(blogs =>
-      this.setState({ blogs }, () => {
-        this.sortBlogsByLikes()
-      })
+      this.setState({ blogs })
     )
-
-    console.log(this.state.blogs)
 
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON !== null) {
@@ -123,18 +119,6 @@ class App extends React.Component {
       this.setState({ user })
       blogService.setToken(user.token)
     }
-
-  }
-
-  sortBlogsByLikes(blogs) {
-    let copy = []
-    for (var i = 0; i < this.state.blogs.length; i++) {
-      copy.push(this.state.blogs[i])
-    }
-    copy.sort(function (blogA, blogB) {
-      return blogB.likes - blogA.likes;
-    });
-    this.setState({ blogs: copy })
   }
 
   render() {
