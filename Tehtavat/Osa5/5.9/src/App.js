@@ -38,8 +38,6 @@ class App extends React.Component {
       url: this.state.newBlogUrl
     }
 
-    console.log('blogObject:', blogObject)
-
     blogService
       .create(blogObject)
       .then(blogObject => {
@@ -197,8 +195,6 @@ class App extends React.Component {
           <h2>Blogs</h2>
           {this.state.blogs.map(blog =>
             <Blog key={blog.id}
-              blogUserName = {blog.user.username}
-              stateUserName = {this.state.user.username}
               title={blog.title}
               author={blog.author}
               likes={blog.likes}
