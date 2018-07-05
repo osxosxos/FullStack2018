@@ -1,18 +1,21 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import App from './App'
-import Blog from './components/Blog'
 jest.mock('./services/blogs')
-import blogService from './services/blogs'
 import LoginForm from './components/LoginForm';
+import Blog from './components/Blog'
+import blogService from './services/blogs'
 import BlogPostFrom from './components/BlogPostForm'
 
 describe('when user is not logged', () => {
+    
+    let app
     beforeAll(() => {
         app = mount(<App />)
     })
 
     it('only login form is rendered', () => {
+        console.log('app: ', app)
         app.update()
         const loginForm = app.find('.LoginForm')
         expect(loginForm).toBe(LoginForm)
@@ -25,14 +28,15 @@ describe('when user is not logged', () => {
     })
 
 })
-
+/*
 describe('when user is logged', () => {
     beforeEach(() => {
         // luo sovellus siten, että käyttäjä on kirjautuneena
     })
 
     it('all notes are rendered', () => {
-        app.update()
+        //app.update()
         // testataan, että blogit renderöityy oikein
     })
 })
+*/
