@@ -21,42 +21,42 @@ class Blog extends React.Component {
     if (this.props.blogUserName === this.props.stateUserName) {
       return (
         <div>
-          <div style={hideWhenVisible} onClick={this.toggleVisibility} className="limitedInfo">
-            {this.props.title} {this.props.author}
+          <div style={hideWhenVisible}>
+            <a onClick={this.toggleVisibility}>{this.props.title}</a> <a>{this.props.author}</a>
           </div>
-          <div style={showWhenVisible} onClick={this.toggleVisibility} className="allInfo">
-            {this.props.title} {this.props.author}
-            <li>{this.props.url}</li>
-            <li>{this.props.likes} {'likes '}
-              <button onClick={this.props.likeBlog(this.props.id)}>
+          <div style={showWhenVisible}>
+            <a onClick={this.toggleVisibility}>{this.props.title}</a> <a>{this.props.author}</a>
+            <p>{this.props.url} </p>
+            <p>{this.props.likes} {'likes '} {}
+              <button onClick={this.props.likeBlog(this.props.id)}> 
                 {'like'}
               </button>
-            </li>
-            {'added by: '}{this.props.name}
+            </p>
+            <p>{'added by: '}{this.props.name}</p>
             <button onClick={this.props.removeBlog(this.props.id)}>
               {'delete'}
             </button>
           </div>
-        </div >
+        </div>
       )
     }
 
     return (
       <div>
-        <div style={hideWhenVisible} onClick={this.toggleVisibility} className="limitedInfo">
-          {this.props.title} {this.props.author}
+        <div style={hideWhenVisible}>
+          <a onClick={this.toggleVisibility}>{this.props.title}</a> <a>{this.props.author}</a>
         </div>
-        <div style={showWhenVisible} onClick={this.toggleVisibility} className="allInfo">
-          {this.props.title} {this.props.author}
-          <li>{this.props.url}</li>
-          <li>{this.props.likes} {'likes '}
+        <div style={showWhenVisible}>
+          <a onClick={this.toggleVisibility}>{this.props.title}</a> <a>{this.props.author}</a>
+          <p>{this.props.url} </p>
+          <p>{this.props.likes} {'likes '} {}
             <button onClick={this.props.likeBlog(this.props.id)}>
               {'like'}
             </button>
-          </li>
-          {'added by: '}{this.props.name}
+          </p>
+          <p>{'added by: '}{this.props.name}</p>
         </div>
-      </div >
+      </div>
     )
   }
 }

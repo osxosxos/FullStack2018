@@ -174,57 +174,47 @@ class App extends React.Component {
     if (this.state.user === null) {
       return (
         <div>
-          <div className="LoginForm">
-            <LoginForm
-              state={this.state}
-              login={this.login}
-              handleFieldChange={this.handleFieldChange}
-            />
-          </div>
-          <div>
-            <Notice
-              message={this.state.error}
-              classname='error'
-            />
-          </div>
-        </div >
+          <LoginForm
+            state={this.state}
+            login={this.login}
+            handleFieldChange={this.handleFieldChange}
+          />
+          <Notice
+            message={this.state.error}
+            classname='error'
+          />
+        </div>
       )
     }
 
     if (this.state.user !== null) {
       return (
         <div>
-          <div className="LogoutForm">
-            <LogoutForm
-              state={this.state}
-              logout={this.logout}
+          <LogoutForm
+            state={this.state}
+            logout={this.logout}
+          />
+          <h2>Blogs</h2>
+          {this.state.blogs.map(blog =>
+            <Blog key={blog.id}
+              blogUserName = {blog.user.username}
+              stateUserName = {this.state.user.username}
+              title={blog.title}
+              author={blog.author}
+              likes={blog.likes}
+              url={blog.url}
+              name={blog.user.name}
+              id={blog.id}
+              likeBlog={this.likeBlog}
+              removeBlog={this.removeBlog}
             />
-          </div>
-          <div>
-            <h2>Blogs</h2>
-            {this.state.blogs.map(blog =>
-              <Blog key={blog.id}
-                blogUserName={blog.user.username}
-                stateUserName={this.state.user.username}
-                title={blog.title}
-                author={blog.author}
-                likes={blog.likes}
-                url={blog.url}
-                name={blog.user.name}
-                id={blog.id}
-                likeBlog={this.likeBlog}
-                removeBlog={this.removeBlog}
-              />
-            )}
-          </div>
-          <div className = "BlogPostForm">
-            <h2>{'Be a Hero? Create a new blog!'}</h2>
-            {blogPostForm()}
-            <Notice
-              message={this.state.notice}
-              classname='notice'
-            />
-          </div>
+          )}
+          <h2>{'Be a Hero? Create a new blog!'}</h2>
+          {blogPostForm()}
+          <Notice
+            message={this.state.notice}
+            classname='notice'
+          />
         </div>
       )
     }

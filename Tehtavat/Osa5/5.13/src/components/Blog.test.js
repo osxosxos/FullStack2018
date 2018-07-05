@@ -9,7 +9,7 @@ describe.only('<Blog />', () => {
         blogUserName: "Pertti",
         stateUserName: "Sakari",
         title: "Tuomion blogi",
-        author: "Pertti Speedy Keinonen",
+        author: "Pertti Keinonen",
         url: "www.tuomio.com",
         name: "Pertti Keinonen",
         likes: 4343242,
@@ -36,29 +36,5 @@ describe.only('<Blog />', () => {
         likeButton.simulate('click')
         expect(mockHandler.mock.calls.length).toBe(2)
     })
-
-    it('only title and author are displayed before click', () => {
-
-        const limitedInfoDiv = blogComponent.find('.limitedInfo')
-        expect(limitedInfoDiv.text()).toContain(blog.title)
-        expect(limitedInfoDiv.text()).toContain(blog.author)
-        expect(limitedInfoDiv.text()).not.toContain(blog.likes)
-        expect(limitedInfoDiv.text()).not.toContain(blog.url)
-        expect(limitedInfoDiv.text()).not.toContain(blog.name)
-
-    })
-
-    it('after clicking name the details are displayed', () => {
-
-        const limitedInfoDiv = blogComponent.find('.limitedInfo')
-        limitedInfoDiv.simulate('click')
-        const allInfoDiv = blogComponent.find('.allInfo')
-        expect(allInfoDiv.text()).toContain(blog.title)
-        expect(allInfoDiv.text()).toContain(blog.author)
-        expect(allInfoDiv.text()).toContain(blog.likes)
-        expect(allInfoDiv.text()).toContain(blog.url)
-        expect(allInfoDiv.text()).toContain(blog.name)
-
-      })
 
 })
