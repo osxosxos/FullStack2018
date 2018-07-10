@@ -10,8 +10,8 @@ import loginService from './services/login'
 import './app.css';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {
       user: null,
       error: null,
@@ -145,7 +145,7 @@ class App extends React.Component {
     }
 
   }
-
+  
   sortBlogsByLikes() {
     let copy = []
 
