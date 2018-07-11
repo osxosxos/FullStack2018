@@ -42,7 +42,6 @@ export const creation = (content) => {
 }
 
 export const voting = (id) => {
-  console.log('voting for id: ', id)
   return {
     type: 'VOTE',
     data: { id }
