@@ -1,13 +1,29 @@
 import React from 'react'
 import Filter from './Filter'
+import PropTypes from 'prop-types'
 import { voting } from './../reducers/anecdoteReducer'
 import { notificationChange } from './../reducers/notificationReducer'
 import { notificationDeletion } from './../reducers/notificationReducer'
 
 class AnecdoteList extends React.Component {
+
+  componentDidMount() {
+    const { store } = this.context
+    this.unsubscribe = store.subscribe(() =>
+      this.forceUpdate()
+    )
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
   render() {
-    const anecdotes = this.props.store.getState().anecdotes
-    const filter = this.props.store.getState().filter
+
+    console.log(this.context.store.getState().anecdotes)
+
+    const anecdotes = this.context.store.getState().anecdotes
+    const filter = this.context.getState().filter
     const filteredAnecdotes = anecdotes.filter(anecdote => anecdote.content.includes(filter))
     return (
       <div>
@@ -23,9 +39,9 @@ class AnecdoteList extends React.Component {
             <div>
               has {anecdote.votes}
               <button onClick={() => {
-                this.props.store.dispatch(voting(anecdote.id)),
-                  this.props.store.dispatch(notificationChange(anecdote.content)),
-                  setTimeout(() => { this.props.store.dispatch(notificationDeletion()) }, 5000)
+                this.context.store.dispatch(voting(anecdote.id)),
+                  this.context.store.dispatch(notificationChange(anecdote.content)),
+                  setTimeout(() => { this.context.store.dispatch(notificationDeletion()) }, 5000)
               }
               }>
                 vote
@@ -36,6 +52,10 @@ class AnecdoteList extends React.Component {
       </div>
     )
   }
+}
+
+AnecdoteList.contextTypes = {
+  store: PropTypes.object
 }
 
 export default AnecdoteList

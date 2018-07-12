@@ -1,10 +1,9 @@
 import React from 'react'
 import store from '../store'
-import { filterChange } from './../reducers/notificationReducer'
+import { filterChange } from './../reducers/filterReducer'
 
 class Filter extends React.Component {
     handleChange = (event) => {
-        console.log(event.target.value)
         store.dispatch(filterChange(event.target.value))
     }
 
@@ -15,8 +14,10 @@ class Filter extends React.Component {
 
         return (
             <div style={style}>
-                filter <input onChange={this.handleChange} />
+                {'Filter: '} <input onChange={this.handleChange} />
             </div>
         )
     }
 }
+
+export default Filter
