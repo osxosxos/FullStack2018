@@ -20,8 +20,8 @@ class AnecdoteList extends React.Component {
 
   render() {
     const anecdotes = this.context.store.getState().anecdotes
-    const filter = this.context.store.getState().filter
-    const filteredAnecdotes = anecdotes.filter(anecdote => anecdote.content.includes(filter))
+    const filter = this.context.store.getState().filter.toLowerCase()
+    const filteredAnecdotes = anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter))
     return (
       <div>
         <h2>Anecdotes</h2>
