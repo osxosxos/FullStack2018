@@ -1,8 +1,8 @@
+import anecdoteService from '../services/anecdotes'
+
 const reducer = (store = [], action) => {
   switch (action.type) {
     case 'CREATE':
-      console.log('CREATE')
-      console.log(action.content)
       return [...store, action.content]
     case 'INIT':
       return action.data
@@ -16,8 +16,6 @@ const reducer = (store = [], action) => {
 }
 
 export const creation = (content) => {
-  console.log('creation.content:')
-  console.log(content)
   return {
     type: 'CREATE',
     content
@@ -31,10 +29,13 @@ export const voting = (id) => {
   }
 }
 
-export const initialization = (data) => {
-  return {
-    type: 'INIT',
-    data
+export const initialization = () => {
+  return async (dispatch) => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch({
+      type: 'INIT',
+      data: anecdotes
+    })
   }
 }
 

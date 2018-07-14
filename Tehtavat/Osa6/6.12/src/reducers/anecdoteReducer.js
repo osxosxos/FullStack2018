@@ -1,8 +1,6 @@
 const reducer = (store = [], action) => {
   switch (action.type) {
     case 'CREATE':
-      console.log('CREATE')
-      console.log(action.content)
       return [...store, action.content]
     case 'INIT':
       return action.data
@@ -16,8 +14,6 @@ const reducer = (store = [], action) => {
 }
 
 export const creation = (content) => {
-  console.log('creation.content:')
-  console.log(content)
   return {
     type: 'CREATE',
     content
