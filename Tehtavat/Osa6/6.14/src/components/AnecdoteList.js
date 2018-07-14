@@ -37,11 +37,6 @@ const AnecdoteList = (props) => (
 )
 
 const AnecdotesToShow = (anecdotes, filter) => {
-  console.log('ANECDOTES:')
-  console.log(anecdotes)
-  anecdotes.map(a =>
-    {console.log(typeof(a.content))}
-  )
   return anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
 }
 
