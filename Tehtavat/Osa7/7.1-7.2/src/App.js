@@ -8,7 +8,7 @@ import BlogPostForm from './components/BlogPostForm'
 import blogService from './services/blogs'
 import userService from './services/users'
 import loginService from './services/login'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import './app.css';
 
 const Users = (props) => {
@@ -16,36 +16,37 @@ const Users = (props) => {
     <div>
       <h2>Users</h2>
       <table>
-        <tr>
-          <th>User</th>
-          <th>Blogs</th>
-        </tr>
-        {props.users.map(user =>
+        <tbody>
           <tr>
-            <td>{user.username}</td>
-            <td>{user.blogs.length}</td>
+            <th>User</th>
+            <th>Blogs</th>
           </tr>
-        )}
+          {props.users.map(user =>
+            <tr key={user.id}>
+              <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
+              <td>{user.blogs.length}</td>
+            </tr>
+          )}
+        </tbody>
       </table>
     </div>
   )
 }
 
 const User = (props) => {
-  console.log(props.user)
-  // console.log(props.user.id)
-  return (null)
-  /*
+  const blogs = []
+  props.user.blogs.map(blog => blogs.push({ id: blog._id, title: blog.title }))
   return (
     <div>
       <h1>{props.user.name}</h1>
       <h2>{'added blogs'}</h2>
-      {props.user.blogs.map(blog =>
-        <td>{blog.title}</td>
+      {blogs.map(blog =>
+        <div key={blog.id}>
+          <li>{blog.title}</li>
+        </div>
       )}
     </div>
   )
-  */
 }
 
 class App extends React.Component {
@@ -167,17 +168,16 @@ class App extends React.Component {
     this.setState({ user: null })
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
 
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs }, () => {
-        this.sortBlogsByLikes()
-      })
-    )
+    const blogs = await blogService.getAll()
+    this.setState({ blogs: blogs })
+    this.sortBlogsByLikes()
 
-    userService.getAll().then(users =>
-      this.setState({ users })
-    )
+    const users = await userService.getAll()
+    console.log('componentDidMount.users')
+    console.log(users)
+    this.setState({ users: users })
 
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON !== null) {
@@ -203,9 +203,10 @@ class App extends React.Component {
 
   render() {
 
-    console.log(this.state.users)
+    this.componentDidMount
 
     const userById = (id) => {
+      console.log(this.state.users)
       console.log(id)
       console.log(this.state.users.find(user => user.id = id))
       return this.state.users.find(user => user.id = id)
