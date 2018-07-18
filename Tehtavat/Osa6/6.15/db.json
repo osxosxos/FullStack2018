@@ -2,17 +2,17 @@
   "anecdotes": [
     {
       "content": "If it hurts, do it more often",
-      "votes": 13,
+      "votes": 15,
       "id": 1
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
-      "votes": 11,
+      "votes": 13,
       "id": 2
     },
     {
       "content": "Premature optimization is the root of all evil.",
-      "votes": 12,
+      "votes": 18,
       "id": 3
     },
     {
@@ -37,8 +37,13 @@
     },
     {
       "content": "Programming is like Perkele, it's from Hell!",
-      "votes": 88,
+      "votes": 93,
       "id": 8
+    },
+    {
+      "content": "I lied!",
+      "votes": 2,
+      "id": 9
     }
   ]
 }

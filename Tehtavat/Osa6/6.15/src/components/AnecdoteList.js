@@ -2,8 +2,7 @@ import React from 'react'
 import Filter from './Filter'
 import { connect } from 'react-redux'
 import { voting } from './../reducers/anecdoteReducer'
-import { notificationChange } from './../reducers/notificationReducer'
-import { notificationDeletion } from './../reducers/notificationReducer'
+import { notify } from './../reducers/notificationReducer'
 
 const AnecdoteList = (props) => (
   <div>
@@ -14,10 +13,7 @@ const AnecdoteList = (props) => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>
           <div> has {anecdote.votes}
-            <button onClick={() => {
-              props.voting(anecdote), 
-              props.notificationChange(anecdote.content),
-              setTimeout(() => { props.notificationDeletion() }, 5000)}}>
+            <button onClick={() => { props.voting(anecdote), props.notify(anecdote.content, 5000) }}>
               {'vote'}
             </button>
           </div>
@@ -39,5 +35,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { voting, notificationChange, notificationDeletion }
+  { voting, notify }
 )(AnecdoteList)
