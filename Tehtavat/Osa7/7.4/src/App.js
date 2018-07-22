@@ -49,6 +49,61 @@ const User = (props) => {
   )
 }
 
+const SingleBlog = (props) => {
+  if (props.blog === undefined) {
+    props.history.push('/blogs')
+  } else if (props.blog.user.username === props.stateUserName) {
+    return (
+      <div>
+        <h2>{props.blog.title}</h2>
+        <div>{props.blog.url}</div>
+        <div>
+          {props.blog.likes}{' likes'}
+          <button onClick={props.likeBlog(props.blog.id)}>
+            {'like'}
+          </button>
+        </div>
+        <div>
+          {'added by '}{props.blog.author}
+          <button onClick={props.removeBlog(props.blog.id)}>
+            {'delete'}
+          </button>
+        </div>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <h2>{props.blog.title}</h2>
+        <div>{props.blog.url}</div>
+        <div>
+          {props.blog.likes}{' likes'}
+          <button onClick={props.likeBlog(props.blog.id)}>
+            {'like'}
+          </button>
+        </div>
+        <div>{'added by '}{props.blog.author}</div>
+      </div>
+    )
+  }
+  return null
+}
+
+const Blogs = (props) => {
+  return (
+    <div>
+      <h2>Blogs</h2>
+      {props.blogs.map(blog =>
+        <Blog key={blog.id}
+          title={blog.title}
+          author={blog.author}
+          id={blog.id}
+        />
+      )}
+    </div>
+  )
+}
+
 class App extends React.Component {
   constructor() {
     super()
@@ -123,7 +178,6 @@ class App extends React.Component {
   }
 
   removeBlog = (id) => {
-
     return () => {
 
       blogService
@@ -175,8 +229,6 @@ class App extends React.Component {
     this.sortBlogsByLikes()
 
     const users = await userService.getAll()
-    console.log('componentDidMount.users')
-    console.log(users)
     this.setState({ users: users })
 
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -206,10 +258,11 @@ class App extends React.Component {
     this.componentDidMount
 
     const userById = (id) => {
-      console.log(this.state.users)
-      console.log(id)
-      console.log(this.state.users.find(user => user.id = id))
-      return this.state.users.find(user => user.id = id)
+      return this.state.users.find(user => user.id === id)
+    }
+
+    const blogById = (id) => {
+      return this.state.blogs.find(blog => blog.id === id)
     }
 
     const blogPostForm = () => (
@@ -225,7 +278,7 @@ class App extends React.Component {
     if (this.state.user === null) {
       return (
         <div>
-          <div className="LoginForm">
+          <div>
             <LoginForm
               state={this.state}
               login={this.login}
@@ -245,30 +298,13 @@ class App extends React.Component {
     if (this.state.user !== null) {
       return (
         <div>
-          <div className="LogoutForm">
+          <div>
             <LogoutForm
               state={this.state}
               logout={this.logout}
             />
           </div>
           <div>
-            <h2>Blogs</h2>
-            {this.state.blogs.map(blog =>
-              <Blog key={blog.id}
-                blogUserName={blog.user.username}
-                stateUserName={this.state.user.username}
-                title={blog.title}
-                author={blog.author}
-                likes={blog.likes}
-                url={blog.url}
-                name={blog.user.name}
-                id={blog.id}
-                likeBlog={this.likeBlog}
-                removeBlog={this.removeBlog}
-              />
-            )}
-          </div>
-          <div className="BlogPostForm">
             <h2>{'Be a Hero? Create a new blog!'}</h2>
             {blogPostForm()}
             <Notice
@@ -278,14 +314,35 @@ class App extends React.Component {
           </div>
           <Router>
             <div>
-              <Route exact path="/users" render={() => <Users users={this.state.users} />} />
-              <Route exact path="/users/:id" render={({ match }) => <User user={userById(match.params.id)} />} />
+              <Route exact path="/blogs" render={() =>
+                <Blogs
+                  blogs={this.state.blogs}
+                />}
+              />
+              <Route exact path="/users" render={() =>
+                <Users
+                  users={this.state.users}
+                />}
+              />
+              <Route exact path="/users/:id" render={({ match }) =>
+                <User
+                  user={userById(match.params.id)}
+                />}
+              />
+              <Route exapt path="/blogs/:id" render={({ history, match }) =>
+                <SingleBlog
+                  blog={blogById(match.params.id)}
+                  likeBlog={this.likeBlog}
+                  removeBlog={this.removeBlog}
+                  stateUserName={this.state.user.username}
+                  history={history}
+                />}
+              />
             </div>
           </Router>
         </div>
       )
     }
-
   }
 }
 
