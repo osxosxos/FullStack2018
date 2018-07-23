@@ -41,7 +41,7 @@ class App extends React.Component {
     console.log('Hello from component did mount')
     console.log('blogs are:')
     console.log(blogs)
-    this.sortBlogsByLikes()
+    //this.sortBlogsByLikes()
 
     const users = await userService.getAll()
     this.context.store.dispatch(allUsers(users))
@@ -134,6 +134,7 @@ class App extends React.Component {
     copy.sort(function (blogA, blogB) {
       return blogB.likes - blogA.likes;
     });
+    console.log('sortByLikes')
     this.context.store.dispatch(allBlogs(copy))
   }
 
