@@ -44,7 +44,9 @@ const BlogCommentForm = (props) => {
 }
 
 const Users = (props) => {
+  console.log(props.users)
   props.users.map(user => console.log(user))
+  props.users.map(user => console.log(user['blogs']))
   props.users.map(user => console.log(user.blogs))
   return (
     <div>
@@ -175,6 +177,29 @@ class App extends React.Component {
     }
   }
 
+  componentWillMount = async () => {
+
+    const { store } = this.context
+    this.unsubscribe = store.subscribe(() => this.forceUpdate())
+
+    const blogs = await blogService.getAll()
+    this.setState({ blogs: blogs })
+    this.sortBlogsByLikes()
+
+    const users = await userService.getAll()
+    this.context.store.dispatch(allUsers(users))
+    console.log(users)
+    users.map(user => console.log(user.blogs))
+    users.map(user => console.log(user['blogs']))
+
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    if (loggedUserJSON !== null) {
+      const user = JSON.parse(loggedUserJSON)
+      this.setState({ user })
+      blogService.setToken(user.token)
+    }
+  }
+
   handleFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
@@ -274,31 +299,6 @@ class App extends React.Component {
     this.setState({ user: null })
   }
 
-  componentWillMount = async () => {
-    const { store } = await this.context
-    this.unsubscribe = store.subscribe(() =>
-      this.forceUpdate()
-    )
-  }
-
-  componentDidMount = async () => {
-
-    const blogs = await blogService.getAll()
-    this.setState({ blogs: blogs })
-    this.sortBlogsByLikes()
-
-    const users = await userService.getAll()
-    this.context.store.dispatch(allUsers(users))
-
-    const loggedUserJSON = window.localStorage.getItem('loggedUser')
-    if (loggedUserJSON !== null) {
-      const user = JSON.parse(loggedUserJSON)
-      this.setState({ user })
-      blogService.setToken(user.token)
-    }
-
-  }
-
   componentWillUnmount() {
     this.unsubscribe()
   }
@@ -315,8 +315,6 @@ class App extends React.Component {
   }
 
   render() {
-
-    this.componentDidMount
 
     const userById = (id) => {
       return this.context.store.getState().users.find(user => user.id === id)

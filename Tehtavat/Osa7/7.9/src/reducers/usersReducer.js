@@ -1,7 +1,7 @@
 const usersReducer = (state = [], action) => {
     switch (action.type) {
         case 'ALL':
-            return [...state, action.data]
+            return action.data
         default:
             return state
     }
