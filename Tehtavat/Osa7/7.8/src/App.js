@@ -9,7 +9,7 @@ import userService from './services/users'
 import loginService from './services/login'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { notify } from './reducers/notificationReducer'
+import { notify, clear } from './reducers/notificationReducer'
 import './app.css';
 
 const BlogComments = (props) => {
@@ -81,6 +81,7 @@ const User = (props) => {
 }
 
 const SingleBlog = (props) => {
+
   if (props.blog === undefined) {
     props.history.push('/blogs')
   } else if (props.blog.user.username === props.stateUserName) {
@@ -192,6 +193,7 @@ class App extends React.Component {
           newBlogUrl: ''
         })
         this.context.store.dispatch(notify('Blog successfully added!'))
+        setTimeout(() => { this.context.store.dispatch(clear()) }, 5000)
       })
   }
 
@@ -205,7 +207,8 @@ class App extends React.Component {
       blogService
         .like(id, updatedBlog)
         .catch(error => {
-          this.context.store.notify('blog has already been removed from server')
+          this.context.store.dispatch(notify('blog has already been removed from server'))
+          setTimeout(() => { this.context.store.dispatch(clear()) }, 5000)
         })
       this.setState({
         blogs: this.state.blogs.map(blog => blog.id !== id ? blog : updatedBlog)
@@ -218,7 +221,8 @@ class App extends React.Component {
       blogService
         .comment(id, comment)
         .catch(error => {
-          this.context.store.notify('blog has already been removed from server')
+          this.context.store.dispatch(notify('blog has already been removed from server'))
+          setTimeout(() => { this.context.store.dispatch(clear()) }, 5000)
           this.setState({
             blogs: this.state.blogs.filter(blog => blog.id !== id)
           })
@@ -233,15 +237,13 @@ class App extends React.Component {
   }
 
   removeBlog = (id) => {
-    return () => {
-      blogService
-        .remove(id)
-        .catch(error => {
-          this.context.store.notify('blog has already been removed from server')
-          this.setState({
-            blogs: this.state.blogs.filter(blog => blog.id !== id)
-          })
-        })
+    return async () => {
+      const deletion = await blogService.remove(id)
+      this.context.store.dispatch(notify('Blog successfully deleted!'))
+      setTimeout(() => { this.context.store.dispatch(clear()) }, 5000)
+      this.setState({
+        blogs: this.state.blogs.filter(blog => blog.id !== id)
+      })
     }
   }
 
@@ -256,7 +258,8 @@ class App extends React.Component {
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       this.setState({ username: '', password: '', user })
     } catch (exception) {
-      this.context.store.notify('wrong username or password')
+      this.context.store.dispatch(notify('wrong username or password'))
+      setTimeout(() => { this.context.store.dispatch(clear()) }, 5000)
     }
   }
 
@@ -266,12 +269,14 @@ class App extends React.Component {
     this.setState({ user: null })
   }
 
-  componentDidMount = async () => {
-
-    const { store } = this.context
+  componentWillMount = async () => {
+    const { store } = await this.context
     this.unsubscribe = store.subscribe(() =>
       this.forceUpdate()
     )
+  }
+
+  componentDidMount = async () => {
 
     const blogs = await blogService.getAll()
     this.setState({ blogs: blogs })

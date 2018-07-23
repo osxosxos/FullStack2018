@@ -13,10 +13,10 @@ const Notice = (props) => {
             </div>
         )
     }
-
-    if (props.message === 'blog has already been removed from server') {
+    
+    if (props.message === 'Blog successfully deleted!') {
         return (
-            <div className="error">
+            <div className="notice">
                 {props.message}
             </div>
         )
