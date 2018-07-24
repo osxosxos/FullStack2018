@@ -3,7 +3,6 @@ import BlogCommentForm from './BlogCommentForm'
 import BlogComments from './BlogComments'
 
 const SingleBlog = (props) => {
-
     if (props.blog === undefined) {
         props.history.push('/blogs')
     } else if (props.blog.user.username === props.stateUserName) {

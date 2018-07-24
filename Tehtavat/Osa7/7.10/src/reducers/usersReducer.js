@@ -1,6 +1,6 @@
 const usersReducer = (state = [], action) => {
     switch (action.type) {
-        case 'ALL':
+        case 'ALLUSERS':
             return action.data
         default:
             return state
@@ -9,7 +9,7 @@ const usersReducer = (state = [], action) => {
 
 export const allUsers = (users) => {
     return ({
-        type: 'ALL',
+        type: 'ALLUSERS',
         data: users
     })
 }

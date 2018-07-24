@@ -31,17 +31,14 @@ class App extends React.Component {
     }
   }
 
-  componentWillMount = async () => {
+  componentDidMount = async () => {
 
     const { store } = this.context
     this.unsubscribe = store.subscribe(() => this.forceUpdate())
 
     const blogs = await blogService.getAll()
     this.context.store.dispatch(allBlogs(blogs))
-    console.log('Hello from component did mount')
-    console.log('blogs are:')
-    console.log(blogs)
-    //this.sortBlogsByLikes()
+    this.sortBlogsByLikes()
 
     const users = await userService.getAll()
     this.context.store.dispatch(allUsers(users))
@@ -78,27 +75,34 @@ class App extends React.Component {
     setTimeout(() => { this.context.store.dispatch(clear()) }, 5000)
   }
 
-  likeBlog = async (id) => {
-    const blog = this.context.store.getState().find(blog => blog.id === id)
-    const updatedBlog = { ...blog, likes: blog.likes + 1 }
-    const likedBlog = await blogService.like(id, updatedBlog)
-    this.context.store.dispatch(updateBlog(likedBlog))
-    console.log(likedBlog)
+  likeBlog = (id) => {
+    console.log('LIKEBLOG CALLED!')
+    return async () => {
+      const blog = this.context.store.getState().blogs.find(blog => blog.id === id)
+      const updatedBlog = { ...blog, likes: blog.likes + 1 }
+      this.context.store.dispatch(updateBlog(updatedBlog))
+      await blogService.like(id, updatedBlog)
+    }
   }
 
-  commentBlog = async (id, comment) => {
-    const blog = this.context.store.getState().find(blog => blog.id === id)
-    const blogComment = await blogService.comment(id, comment)
-    const commentedBlog = { ...blog, comments: blog.comments.concat(comment) }
-    this.context.store.dispatch(updateBlog(commentedBlog))
-    console.log(blogComment)
+  commentBlog = (id, comment) => {
+    console.log('COMMENTBLOG HAS BEEN CALLED')
+    return async () => {
+      const blog = this.context.store.getState().blogs.find(blog => blog.id === id)
+      const blogComment = await blogService.comment(id, comment)
+      console.log(blogComment)
+      const commentedBlog = { ...blog, comments: blog.comments.concat(comment) }
+      this.context.store.dispatch(updateBlog(commentedBlog))    
+    }
   }
 
-  removeBlog = async (id) => {
-    const deletedBlog = await blogService.remove(id)
-    this.context.store.dispatch(notify('Blog successfully deleted!'))
-    this.context.store.dispatch(deleteBlog(id))
-    console.log(deletedBlog)
+  removeBlog = (id) => {
+    console.log('REMOVEBLOG HAS BEEN CALLED')
+    return async () => {
+      this.context.store.dispatch(notify('Blog successfully deleted!'))
+      this.context.store.dispatch(deleteBlog(id))
+      await blogService.remove(id)
+    }
   }
 
   // ÄLÄ TEE TÄLLE VIELÄ MITÄÄN!
@@ -125,7 +129,6 @@ class App extends React.Component {
     this.setState({ user: null })
   }
 
-  // TÄMÄ ON KUNNOSSA!
   sortBlogsByLikes() {
     let copy = []
     for (var i = 0; i < this.context.store.getState().blogs.length; i++) {
@@ -134,15 +137,10 @@ class App extends React.Component {
     copy.sort(function (blogA, blogB) {
       return blogB.likes - blogA.likes;
     });
-    console.log('sortByLikes')
     this.context.store.dispatch(allBlogs(copy))
   }
 
   render() {
-  
-    console.log('Hello from render')
-    console.log('here is a list of store.getState().blogs:')
-    console.log(this.context.store.getState().blogs)
 
     const userById = (id) => {
       return this.context.store.getState().users.find(user => user.id === id)

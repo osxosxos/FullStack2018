@@ -1,15 +1,16 @@
 const blogsReducer = (state = [], action) => {
     switch (action.type) {
-        case 'ALL':
-            console.log('Hello from blogReducer')
-            console.log('action.data is:')
-            console.log(action.data)
+        case 'ALLBLOGS':
             return action.data
         case 'CREATE':
             return state.concat(action.newBlog)
         case 'UPDATE':
-            return state.map(blog => blog._id === action.id ? blog : action.updatedBlog)
+            console.log('UPDATE.STATE: ', state)
+            console.log('UPDATEDBLOG.ID: ', action.updatedBlog.id)
+            return state.map(blog => blog._id === action.updatedBlog.id ? blog : action.updatedBlog)
         case 'DELETE':
+            console.log('DELETE.STATE: ', state)
+            console.log('DELETEBLOG.ID: ', action.blogId)
             return state.filter(blog => blog._id !== action.blogId)
         default:
             return state
@@ -18,7 +19,7 @@ const blogsReducer = (state = [], action) => {
 
 export const allBlogs = (blogs) => {
     return ({
-        type: 'ALL',
+        type: 'ALLBLOGS',
         data: blogs
     })
 }
