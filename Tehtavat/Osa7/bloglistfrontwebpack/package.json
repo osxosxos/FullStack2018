@@ -1,0 +1,40 @@
+{
+    "name": "webpack-osa7",
+    "version": "0.0.1",
+    "description": "practising webpack",
+    "scripts": {
+        "build": "webpack --mode=production",
+        "start": "webpack-dev-server --mode=development",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject",
+        "lint": "eslint ."
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "babel-core": "^6.26.3",
+        "babel-loader": "^7.1.5",
+        "babel-plugin-transform-class-properties": "^6.24.1",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-react": "^6.24.1",
+        "webpack": "^4.16.2",
+        "webpack-cli": "^3.1.0",
+        "webpack-dev-server": "^3.1.5",
+        "babel-eslint": "^8.2.6",
+        "enzyme": "^3.3.0",
+        "enzyme-adapter-react-16": "^1.1.1",
+        "eslint": "^5.2.0",
+        "eslint-plugin-jest": "^21.18.0",
+        "eslint-plugin-react": "^7.10.0"
+    },
+    "dependencies": {
+        "react": "^16.4.1",
+        "react-dom": "^16.4.1",
+        "axios": "^0.17.1",
+        "prop-types": "^15.6.2",
+        "react-redux": "^5.0.7",
+        "react-router-dom": "^4.3.1",
+        "react-scripts": "1.0.17",
+        "redux": "^4.0.0",
+        "semantic-ui-react": "^0.82.1"
+    }
+}
